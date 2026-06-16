@@ -202,6 +202,17 @@ section{position:relative;padding:clamp(56px,8vw,104px) 0}
 footer{padding:40px 0 56px;text-align:center;color:var(--dim);font-size:13px}
 footer b{color:var(--muted)}
 
+/* team lockup (top of hero) */
+.team{display:inline-flex;align-items:center;gap:14px;margin-bottom:20px;padding:10px 18px 10px 12px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:var(--soft);transition:transform .25s ease,box-shadow .25s ease}
+.team:hover{transform:translateY(-2px);box-shadow:var(--lift)}
+.team img{width:88px;height:auto;display:block}
+.team .tx{display:flex;flex-direction:column;line-height:1.25}
+.team .tx small{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.team .tx b{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--ink)}
+.team .tx .slo{font-style:italic;font-size:12px;color:var(--muted);margin-top:2px;max-width:30ch}
+.team .tx .slo::before,.team .tx .slo::after{content:"💛";font-style:normal;font-size:10px;opacity:.9}
+.team .tx .slo::before{margin-right:5px}.team .tx .slo::after{margin-left:5px}
+
 [data-reveal]{opacity:0;transform:translateY(22px) scale(.985);transition:opacity .65s cubic-bezier(.2,.7,.2,1),transform .65s cubic-bezier(.2,.7,.2,1)}
 [data-reveal].in{opacity:1;transform:none}
 
@@ -261,6 +272,13 @@ footer b{color:var(--muted)}
     <div class="wrap">
       <div class="hero-grid">
         <div>
+          <div class="team" data-reveal>
+            <picture>
+              <source srcset="assets/mai-logo.webp" type="image/webp">
+              <img src="assets/mai-logo.png" alt="MAI — Mutual Aid Intelligence" width="88" loading="eager">
+            </picture>
+            <span class="tx"><small>Một dự án của đội</small><b>MAI · Mutual Aid Intelligence</b><i class="slo">Để không em nhỏ nào bị bỏ lại phía sau</i></span>
+          </div>
           <div class="eyebrow" data-reveal>GreenNode Claw-a-thon · Trợ lý học tập AI</div>
           <h1 class="display" data-reveal>Biến tài liệu thành<span class="rotwrap"><span id="rotw" class="grad">nhiệm vụ học tập</span></span></h1>
           <p class="lead" data-reveal>Quest sống ngay trong Zalo. Người dẫn đường tải tài liệu, AI biến thành nhiệm vụ cá nhân hoá cho từng học viên — 5 phút mỗi ngày, có XP, cấp độ và một bảng theo dõi cả lớp.</p>
