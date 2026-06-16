@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QUEST ✦ wordmark. "QUEST" in ink (#16212e), the ✦ in VNG orange (#f1592b), Space Grotesk Bold.
+     Browsers render the web font via the @import below. For environments without web fonts
+     (e.g. PowerPoint/Keynote), export this to PNG, or type "QUEST" in Space Grotesk + place logo-mark.svg. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 70" width="300" height="70" role="img" aria-label="QUEST">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;display=swap');
+    .wm{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:52px;letter-spacing:-1.1px}
+  </style>
+  <rect width="300" height="70" fill="none"/>
+  <text x="2" y="52" class="wm" fill="#16212e">QUEST<tspan dx="3" fill="#f1592b">✦</tspan></text>
+</svg>

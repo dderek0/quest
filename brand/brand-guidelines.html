@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QUEST ✦ — Brand &amp; Visual Guidelines</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --vng:#f1592b; --vng2:#ff7a3c;
+  --green:#10b981; --greenD:#059669; --blue:#0068ff;
+  --ink:#16212e; --muted:#54616f; --dim:#8a96a4;
+  --line:rgba(20,33,48,.10); --line2:rgba(20,33,48,.16); --bg:#f6f8fc;
+  --ink-900:#0d1320; --ink-800:#1b2738; --gold:#b45309;
+  --soft:0 4px 14px rgba(20,33,48,.07); --lift:0 18px 44px rgba(20,33,48,.12);
+  --fd:'Space Grotesk',system-ui,sans-serif;
+  --fb:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --grad:linear-gradient(118deg,#0ea869,#10b981 30%,#0a86e0 72%,#0068ff);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);font-family:var(--fb);line-height:1.55;-webkit-font-smoothing:antialiased;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  background:
+    radial-gradient(720px 420px at 0% -8%,rgba(16,185,129,.10),transparent 60%),
+    radial-gradient(720px 420px at 100% -2%,rgba(0,104,255,.10),transparent 60%),
+    var(--bg);
+}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px 72px}
+.display{font-family:var(--fd);letter-spacing:-.02em;line-height:1.08}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.eyebrow{font-family:var(--fd);text-transform:uppercase;letter-spacing:.18em;font-size:10.5px;font-weight:700;color:var(--vng)}
+.muted{color:var(--muted)} .dim{color:var(--dim)}
+.num{font-variant-numeric:tabular-nums}
+p{margin:0 0 10px} a{color:var(--blue)}
+
+/* logo */
+.logo{font-family:var(--fd);font-weight:700;letter-spacing:-.02em;color:var(--ink);display:inline-flex;align-items:baseline;text-decoration:none}
+.logo span{color:var(--vng);margin-left:1px}
+
+/* header */
+.head{padding:46px 0 8px}
+.head .logo{font-size:26px;margin-bottom:26px}
+.head h1{font-size:40px;margin:8px 0 0}
+.head .sub{color:var(--muted);font-size:15.5px;max-width:62ch;margin-top:14px;line-height:1.6}
+.head .meta{margin-top:22px;border-top:1px solid var(--line);padding-top:14px;color:var(--dim);font-size:12.5px}
+
+/* section */
+.sec{margin:46px 0 0;padding-top:24px;border-top:2px solid var(--line)}
+.sec h2{font-family:var(--fd);font-size:25px;letter-spacing:-.01em;margin:6px 0 6px}
+.sec .lead{color:var(--muted);font-size:14px;max-width:64ch;margin:0 0 18px}
+h3{font-family:var(--fd);font-size:15px;margin:24px 0 10px}
+
+/* grids */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+
+/* color swatches */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:14px}
+.sw{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--soft);break-inside:avoid}
+.sw .c{height:80px}
+.sw .m{padding:11px 13px}
+.sw .m b{font-family:var(--fd);font-size:13.5px;display:block}
+.sw .hex{font-weight:700;font-size:12.5px;margin-top:2px}
+.sw .var{color:var(--dim);font-size:11px;font-family:var(--fd)}
+.sw .use{color:var(--muted);font-size:11.5px;margin-top:6px;line-height:1.45}
+
+/* gradient bars */
+.gbar{height:66px;border-radius:14px;box-shadow:var(--soft);display:flex;align-items:flex-end;padding:10px 13px;color:#fff;font-family:var(--fd);font-weight:700;font-size:12.5px;text-shadow:0 1px 8px rgba(0,0,0,.30);margin-bottom:12px;break-inside:avoid}
+
+/* type rows */
+.trow{display:flex;align-items:baseline;justify-content:space-between;gap:18px;border-top:1px solid var(--line);padding:14px 0;break-inside:avoid}
+.trow:first-of-type{border-top:0}
+.trow .lab{color:var(--dim);font-size:11.5px;white-space:nowrap;font-family:var(--fd);text-align:right;min-width:140px}
+
+/* cards / components */
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--soft);overflow:hidden;break-inside:avoid}
+.card.pad{padding:18px}
+.chead{padding:14px 16px;border-bottom:1px solid var(--line);font-family:var(--fd);font-weight:700;font-size:14.5px}
+.chead.dark{background:linear-gradient(120deg,#0d1320,#1b2738);color:#fff;border:0}
+.cbody{padding:14px 16px;font-size:13.5px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-family:var(--fd);border-radius:12px;padding:11px 17px;text-decoration:none;font-size:14px;border:0;line-height:1;cursor:pointer}
+.btn.primary{background:linear-gradient(120deg,var(--vng),var(--vng2));color:#fff;box-shadow:0 10px 24px rgba(241,89,43,.28)}
+.btn.ok{background:linear-gradient(120deg,var(--green),var(--greenD));color:#fff}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line2);box-shadow:var(--soft)}
+.btn.dark{background:#0d1320;color:#fff}
+.btn.sm{padding:8px 13px;font-size:13px;border-radius:10px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:99px}
+.chip.lvl{color:var(--blue);background:rgba(0,104,255,.10)}
+.chip.xp{color:var(--greenD);background:rgba(16,185,129,.10)}
+.chip.fl{color:var(--vng);background:rgba(241,89,43,.10)}
+.codechip{display:inline-flex;align-items:center;gap:9px;background:#f1f5fa;border:1px dashed var(--line2);border-radius:99px;padding:6px 12px;font-family:var(--fd);font-weight:700;font-size:13px}
+.note{background:#eafaf3;border:1px solid rgba(16,185,129,.30);color:#0b6b4f;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5}
+.bar{height:8px;border-radius:99px;background:#eef2f7;overflow:hidden;max-width:280px}
+.bar i{display:block;height:100%;width:62%;background:linear-gradient(90deg,var(--green),var(--blue))}
+.radii{display:flex;gap:14px;flex-wrap:wrap}
+.radii .b{width:84px;height:60px;background:#fff;border:1px solid var(--line2);box-shadow:var(--soft);display:flex;align-items:flex-end;justify-content:center;padding:6px;font-size:11px;color:var(--dim);font-family:var(--fd)}
+
+/* do / don't */
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.dd{grid-template-columns:1fr}}
+.dd .col{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:#fff;box-shadow:var(--soft)}
+.dd .col h4{margin:0 0 8px;font-family:var(--fd);font-size:13.5px;display:flex;align-items:center;gap:7px}
+.dd .yes h4{color:var(--greenD)} .dd .no h4{color:var(--vng)}
+.dd ul{margin:0;padding-left:18px} .dd li{margin:5px 0;font-size:13px;color:var(--muted)}
+
+/* on-dark logo demo */
+.ondark{background:linear-gradient(120deg,#0d1320,#1b2738);border-radius:14px;padding:26px;display:flex;align-items:center;justify-content:center;box-shadow:var(--soft)}
+.ondark .logo{color:#fff;font-size:30px}
+
+/* slide mockups */
+.mock{aspect-ratio:16/9;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--soft);position:relative;padding:24px 28px;display:flex;flex-direction:column;break-inside:avoid}
+.mock .ml{font-family:var(--fd);font-weight:700;font-size:15px}
+.mock.light{background:radial-gradient(380px 220px at 0% -12%,rgba(16,185,129,.14),transparent 60%),radial-gradient(380px 220px at 100% -8%,rgba(0,104,255,.14),transparent 60%),#fff}
+.mock.dark{background:radial-gradient(360px 220px at 100% 0%,rgba(241,89,43,.20),transparent 58%),linear-gradient(120deg,#0d1320,#1b2738);color:#fff}
+.mock .eyebrow{margin-top:auto}
+.mock h3{margin:6px 0 0;font-size:25px;line-height:1.06}
+.mock .msub{font-size:11.5px;margin-top:8px}
+.mock .mbig{font-family:var(--fd);font-weight:700;font-size:46px;letter-spacing:-.02em}
+.mockcap{font-size:11.5px;color:var(--dim);margin-top:8px;text-align:center}
+.mock ul{margin:10px 0 0;padding:0;list-style:none}
+.mock li{font-size:12.5px;margin:7px 0;padding-left:18px;position:relative;color:#33414f}
+.mock li::before{content:"✦";position:absolute;left:0;color:var(--vng);font-size:11px}
+
+/* glossary table */
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t td{border-bottom:1px solid var(--line);padding:8px 8px;vertical-align:top}
+table.t td.term{width:190px;font-family:var(--fd);font-weight:700;color:var(--vng)}
+
+.foot{margin-top:50px;border-top:1px solid var(--line);padding-top:16px;color:var(--dim);font-size:12px}
+
+@page{size:A4;margin:14mm}
+@media print{ body{background:#fff} .sec{break-inside:avoid} }
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===================== HEADER ===================== -->
+<header class="head">
+  <a class="logo" href="#">QUEST<span>✦</span></a>
+  <div class="eyebrow">Brand &amp; Visual Guidelines</div>
+  <h1 class="display">One product, <span class="grad">one look</span>.</h1>
+  <p class="sub">The visual system behind Quest — colors, type, logo, components, and how to apply them to slides and documents. Use these so every deck, page, and screen reads as the same product.</p>
+  <div class="meta">Source of truth: <b>src/pages/ui.ts</b> · machine-readable tokens in <b>tokens.css</b> / <b>tokens.json</b> · v1 · 2026</div>
+</header>
+
+<!-- ===================== 1. LOGO ===================== -->
+<section class="sec">
+  <div class="eyebrow">01 — Identity</div>
+  <h2>Logo</h2>
+  <p class="lead">The wordmark is <b>QUEST</b> in ink with a <b>✦</b> in VNG orange, set in Space Grotesk Bold with tight tracking (−0.02em). The ✦ is the one constant — it carries the brand.</p>
+
+  <div class="g2">
+    <div class="card pad" style="display:flex;align-items:center;justify-content:center">
+      <a class="logo" href="#" style="font-size:46px">QUEST<span>✦</span></a>
+    </div>
+    <div class="ondark">
+      <a class="logo" href="#">QUEST<span>✦</span></a>
+    </div>
+  </div>
+  <p class="dim" style="font-size:12px;margin-top:8px">On light, QUEST is ink (#16212e). On dark, QUEST turns white — the ✦ always stays orange.</p>
+
+  <h3>Clear space &amp; size</h3>
+  <p class="muted" style="font-size:13.5px">Keep clear space around the wordmark equal to the height of the ✦. Minimum legible size ≈ 18px tall on screen. Use <b>logo-mark.svg</b> (the ✦ alone) as a favicon, bullet, or app-icon seed.</p>
+
+  <h3>Do &amp; don't</h3>
+  <div class="dd">
+    <div class="col yes">
+      <h4>✓ Do</h4>
+      <ul>
+        <li>Keep QUEST ink (or white on dark) and the ✦ orange.</li>
+        <li>Use Space Grotesk Bold, tracking −0.02em.</li>
+        <li>Give it room; let it sit on a calm background.</li>
+      </ul>
+    </div>
+    <div class="col no">
+      <h4>✕ Don't</h4>
+      <ul>
+        <li>Recolor QUEST orange or drop the ✦.</li>
+        <li>Swap the font, stretch, outline, or add shadows/glow.</li>
+        <li>Place it on a busy image without a backing.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 2. COLOR ===================== -->
+<section class="sec">
+  <div class="eyebrow">02 — Color</div>
+  <h2>Palette</h2>
+  <p class="lead">VNG orange leads. The green→blue gradient is the signature accent. Everything else is a quiet neutral so content stays in front.</p>
+
+  <h3>Brand</h3>
+  <div class="swatches">
+    <div class="sw"><div class="c" style="background:#f1592b"></div><div class="m"><b>VNG Orange</b><div class="hex num">#f1592b</div><div class="var">--vng</div><div class="use">Primary action, the ✦, accents, eyebrows.</div></div></div>
+    <div class="sw"><div class="c" style="background:#ff7a3c"></div><div class="m"><b>Orange Light</b><div class="hex num">#ff7a3c</div><div class="var">--vng2</div><div class="use">Gradient partner for primary buttons.</div></div></div>
+  </div>
+
+  <h3>Signature gradient — green → blue</h3>
+  <div class="gbar" style="background:linear-gradient(118deg,#0ea869,#10b981 30%,#0a86e0 72%,#0068ff)">signature · #0ea869 → #10b981 → #0a86e0 → #0068ff</div>
+  <div class="swatches">
+    <div class="sw"><div class="c" style="background:#10b981"></div><div class="m"><b>Green</b><div class="hex num">#10b981</div><div class="var">--green</div><div class="use">Gradient start, positive states.</div></div></div>
+    <div class="sw"><div class="c" style="background:#059669"></div><div class="m"><b>Green Deep</b><div class="hex num">#059669</div><div class="var">--greenD</div><div class="use">Success text/icons (needs contrast).</div></div></div>
+    <div class="sw"><div class="c" style="background:#0068ff"></div><div class="m"><b>Blue</b><div class="hex num">#0068ff</div><div class="var">--blue</div><div class="use">Gradient end, links, info.</div></div></div>
+  </div>
+
+  <h3>Neutrals (light theme)</h3>
+  <div class="swatches">
+    <div class="sw"><div class="c" style="background:#16212e"></div><div class="m"><b>Ink</b><div class="hex num">#16212e</div><div class="var">--ink</div><div class="use">All body text &amp; headings.</div></div></div>
+    <div class="sw"><div class="c" style="background:#54616f"></div><div class="m"><b>Muted</b><div class="hex num">#54616f</div><div class="var">--muted</div><div class="use">Secondary text.</div></div></div>
+    <div class="sw"><div class="c" style="background:#8a96a4"></div><div class="m"><b>Dim</b><div class="hex num">#8a96a4</div><div class="var">--dim</div><div class="use">Labels, captions, meta.</div></div></div>
+    <div class="sw"><div class="c" style="background:#f6f8fc;border-bottom:1px solid var(--line)"></div><div class="m"><b>Background</b><div class="hex num">#f6f8fc</div><div class="var">--bg</div><div class="use">Page surface (with the wash).</div></div></div>
+  </div>
+
+  <h3>Dark surfaces &amp; semantic</h3>
+  <div class="swatches">
+    <div class="sw"><div class="c" style="background:linear-gradient(120deg,#0d1320,#1b2738)"></div><div class="m"><b>Ink Dark</b><div class="hex num">#0d1320 → #1b2738</div><div class="var">--ink-900 / 800</div><div class="use">Dark cards, section/divider slides.</div></div></div>
+    <div class="sw"><div class="c" style="background:#059669"></div><div class="m"><b>Success</b><div class="hex num">#059669</div><div class="var">semantic</div><div class="use">Confirmation, "on track".</div></div></div>
+    <div class="sw"><div class="c" style="background:#0068ff"></div><div class="m"><b>Info</b><div class="hex num">#0068ff</div><div class="var">semantic</div><div class="use">Neutral callouts, links.</div></div></div>
+    <div class="sw"><div class="c" style="background:#b45309"></div><div class="m"><b>Warning</b><div class="hex num">#b45309</div><div class="var">--gold</div><div class="use">Caution / highlight.</div></div></div>
+    <div class="sw"><div class="c" style="background:#f1592b"></div><div class="m"><b>Danger</b><div class="hex num">#f1592b</div><div class="var">--vng</div><div class="use">Errors (reuses brand orange).</div></div></div>
+  </div>
+
+  <div class="note" style="margin-top:16px"><b>Contrast:</b> Ink on the light background is ≈15:1 — use it for all body copy. Orange on white (and white on orange) is ≈3.4:1 — fine for <b>large/bold</b> text, icons, and buttons, but never for small body text.</div>
+</section>
+
+<!-- ===================== 3. TYPOGRAPHY ===================== -->
+<section class="sec">
+  <div class="eyebrow">03 — Typography</div>
+  <h2>Type</h2>
+  <p class="lead">Two families: <b>Space Grotesk</b> for display (headings, logo, eyebrows, buttons) and <b>Inter</b> for body. Load both from Google Fonts.</p>
+  <div class="codechip" style="margin-bottom:6px">Space Grotesk · 500 600 700</div>
+  <div class="codechip">Inter · 400 500 600 700 800</div>
+
+  <h3>Scale</h3>
+  <div class="trow"><div class="display" style="font-size:40px">Display 40</div><div class="lab">Space Grotesk 700 · −.02em</div></div>
+  <div class="trow"><div class="display" style="font-size:32px">Heading 1 · 32</div><div class="lab">Space Grotesk 700</div></div>
+  <div class="trow"><div class="display" style="font-size:24px">Heading 2 · 24</div><div class="lab">Space Grotesk 600/700</div></div>
+  <div class="trow"><div class="display" style="font-size:18px">Heading 3 · 18</div><div class="lab">Space Grotesk 600</div></div>
+  <div class="trow"><div style="font-size:16px">Body · 16 — the default reading size, Inter regular, line-height 1.55.</div><div class="lab">Inter 400</div></div>
+  <div class="trow"><div style="font-size:14px" class="muted">Small · 14 — secondary copy and dense UI.</div><div class="lab">Inter 400/500</div></div>
+  <div class="trow"><div style="font-size:12px" class="dim">Caption · 12 — labels &amp; meta.</div><div class="lab">Inter 500</div></div>
+
+  <h3>Signature treatments</h3>
+  <div class="g2">
+    <div class="card pad">
+      <div class="eyebrow">Eyebrow label</div>
+      <div class="muted" style="font-size:12.5px;margin-top:8px">Uppercase, Space Grotesk 700, letter-spacing .18em, orange. Use above a heading to set context.</div>
+    </div>
+    <div class="card pad">
+      <div class="display" style="font-size:26px">Make it <span class="grad">stick</span>.</div>
+      <div class="muted" style="font-size:12.5px;margin-top:8px">Gradient highlight on <b>one</b> phrase per view — never a whole heading or body text.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4. GRADIENTS / EFFECTS ===================== -->
+<section class="sec">
+  <div class="eyebrow">04 — Gradients, depth &amp; shape</div>
+  <h2>Gradients, shadow &amp; radius</h2>
+  <p class="lead">Three gradients, two shadows, one radius scale. Defined as variables in <b>tokens.css</b>.</p>
+
+  <div class="gbar" style="background:linear-gradient(118deg,#0ea869,#10b981 30%,#0a86e0 72%,#0068ff)">--grad-signature · hero text &amp; one key accent</div>
+  <div class="gbar" style="background:linear-gradient(120deg,#f1592b,#ff7a3c)">--grad-brand · primary buttons</div>
+  <div class="gbar" style="background:linear-gradient(90deg,#10b981,#0068ff)">--grad-progress · progress bars &amp; dividers</div>
+
+  <h3>Elevation</h3>
+  <div class="g2">
+    <div class="card pad"><b style="font-family:var(--fd);font-size:13.5px">Soft</b><div class="dim num" style="font-size:11.5px;margin:2px 0 0">0 4px 14px rgba(20,33,48,.07)</div><div class="muted" style="font-size:12.5px;margin-top:6px">Default for cards &amp; chips.</div></div>
+    <div class="card pad" style="box-shadow:var(--lift)"><b style="font-family:var(--fd);font-size:13.5px">Lift</b><div class="dim num" style="font-size:11.5px;margin:2px 0 0">0 18px 44px rgba(20,33,48,.12)</div><div class="muted" style="font-size:12.5px;margin-top:6px">Hover / floating / focal cards.</div></div>
+  </div>
+
+  <h3>Radius</h3>
+  <div class="radii">
+    <div class="b" style="border-radius:10px">10 · btn sm</div>
+    <div class="b" style="border-radius:11px">11 · input</div>
+    <div class="b" style="border-radius:12px">12 · button</div>
+    <div class="b" style="border-radius:18px">18 · card</div>
+    <div class="b" style="border-radius:99px;width:120px">99 · pill</div>
+  </div>
+</section>
+
+<!-- ===================== 5. COMPONENTS ===================== -->
+<section class="sec">
+  <div class="eyebrow">05 — Components</div>
+  <h2>Building blocks</h2>
+  <p class="lead">The shared library from <b>src/pages/ui.ts</b>. Reuse these shapes in slides and docs so screenshots and decks match the product.</p>
+
+  <h3>Buttons</h3>
+  <div class="row">
+    <span class="btn primary">Primary</span>
+    <span class="btn ok">Success</span>
+    <span class="btn ghost">Ghost</span>
+    <span class="btn dark">Dark</span>
+    <span class="btn primary sm">Small</span>
+  </div>
+
+  <h3>Cards</h3>
+  <div class="g2">
+    <div class="card"><div class="chead">Card header<br></div><div class="cbody">Soft-shadowed surface, 18px radius, hairline border. The default container.</div></div>
+    <div class="card"><div class="chead dark">Dark header</div><div class="cbody">Ink-gradient header for focal or "premium" cards.</div></div>
+  </div>
+
+  <h3>Chips, code &amp; feedback</h3>
+  <div class="row" style="margin-bottom:12px">
+    <span class="chip lvl">◆ Cấp 4</span>
+    <span class="chip xp">+120 XP</span>
+    <span class="chip fl">🔥 5 ngày</span>
+    <span class="codechip">MÃ LỚP · QX7K <span style="color:var(--muted);font-weight:600">copy</span></span>
+  </div>
+  <div class="g2">
+    <div class="note">Success / info note — green-tinted, for confirmations and tips.</div>
+    <div><div class="dim" style="font-size:11.5px;margin-bottom:6px">Progress bar (green → blue)</div><div class="bar"><i></i></div></div>
+  </div>
+</section>
+
+<!-- ===================== 6. SLIDES ===================== -->
+<section class="sec">
+  <div class="eyebrow">06 — Applying to slides</div>
+  <h2>Slides &amp; decks</h2>
+  <p class="lead">The reason this folder exists. Start from <b>slide-template.html</b> (a 16:9 deck wired to these tokens) and follow the patterns below.</p>
+
+  <div class="g3">
+    <div>
+      <div class="mock light">
+        <div class="ml">QUEST<span style="color:var(--vng)">✦</span></div>
+        <div class="eyebrow">Eyebrow · context</div>
+        <h3 class="display">Big idea, <span class="grad">one phrase</span> lit.</h3>
+        <div class="msub muted">A thin supporting line underneath.</div>
+      </div>
+      <div class="mockcap">Title slide — light wash, gradient on one phrase</div>
+    </div>
+    <div>
+      <div class="mock dark">
+        <div class="ml" style="color:#fff">QUEST<span style="color:var(--vng)">✦</span></div>
+        <div style="margin-top:auto"><div class="mbig" style="color:var(--vng)">01</div><div class="display" style="font-size:24px;margin-top:4px">Section title</div></div>
+      </div>
+      <div class="mockcap">Section divider — dark ink surface</div>
+    </div>
+    <div>
+      <div class="mock light">
+        <div class="ml">QUEST<span style="color:var(--vng)">✦</span></div>
+        <div class="eyebrow" style="margin-top:14px">Topic</div>
+        <h3 class="display" style="font-size:20px">Heading</h3>
+        <ul>
+          <li>One point per line</li>
+          <li>✦ bullets in orange</li>
+          <li>Ink text, lots of air</li>
+        </ul>
+      </div>
+      <div class="mockcap">Content slide — ✦ bullets</div>
+    </div>
+  </div>
+
+  <h3>Rules for every slide</h3>
+  <div class="dd">
+    <div class="col yes">
+      <h4>✓ Do</h4>
+      <ul>
+        <li>Light background with the radial wash; dark ink surface for section dividers.</li>
+        <li>One idea per slide; generous margins.</li>
+        <li>At most <b>one</b> gradient accent per slide (a phrase or a number).</li>
+        <li>SVG icons from one set (e.g. Lucide); tabular numbers for data.</li>
+        <li>QUEST✦ small in a corner; ✦ as the bullet.</li>
+      </ul>
+    </div>
+    <div class="col no">
+      <h4>✕ Don't</h4>
+      <ul>
+        <li>Decorative chips/pills/sub-labels that just restate the title.</li>
+        <li>Multiple gradients or full-heading gradients competing for attention.</li>
+        <li>Emoji as functional icons; mixed icon styles.</li>
+        <li>Off-palette colors or a second display font.</li>
+        <li>Walls of text — split into more slides instead.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 7. VOICE & NAMING ===================== -->
+<section class="sec">
+  <div class="eyebrow">07 — Voice &amp; naming</div>
+  <h2>Words</h2>
+  <p class="lead">Vietnamese-first; keep common English tech words (app, quiz, link, bot) rather than forcing full translation. Game-themed but plain. The cast names below appear across product and pitch.</p>
+  <table class="t">
+    <tr><td class="term">Người dẫn đường</td><td>Teacher / class owner — creates the class, uploads materials, tracks everyone.</td></tr>
+    <tr><td class="term">Anh hùng</td><td>Learner — runs their own personalized quests.</td></tr>
+    <tr><td class="term">Đội</td><td>Class / group learning from the same material.</td></tr>
+    <tr><td class="term">Nhiệm vụ</td><td>Quest — a ~5-minute pack of questions built from a document.</td></tr>
+    <tr><td class="term">Thử thách</td><td>Challenge — a single question inside a quest.</td></tr>
+    <tr><td class="term">Bảng theo dõi</td><td>Dashboard — the class-progress view for the teacher.</td></tr>
+  </table>
+  <div class="note" style="margin-top:16px"><b>Tone:</b> honest encouragement — never baiting ("mồi"), never blame the audience ("khó đến với từng người" ✓, not "không ai học" ✗). Quest is a team project, <b>not</b> a VNG Games product — no business-unit attribution.</div>
+</section>
+
+<div class="foot">QUEST✦ · Brand &amp; Visual Guidelines · derived from <b>src/pages/ui.ts</b> · tokens in tokens.css / tokens.json</div>
+
+</div>
+</body>
+</html>

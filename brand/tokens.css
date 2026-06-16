@@ -1,0 +1,80 @@
+/* ============================================================
+   QUEST ✦ — Brand design tokens (single source of truth)
+   Mirrors src/pages/ui.ts. Import this file to stay on-brand:
+     <link rel="stylesheet" href="tokens.css">
+   If the product UI changes, update here too.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  /* ---- Brand (primary) ---- */
+  --vng:#f1592b;        /* VNG orange — primary action, the ✦, accents, eyebrows */
+  --vng2:#ff7a3c;       /* orange light — gradient partner for buttons */
+
+  /* ---- Signature gradient (green → blue) ---- */
+  --green:#10b981;      /* signature green */
+  --greenD:#059669;     /* deep green — success */
+  --blue:#0068ff;       /* signature blue — info / links */
+
+  /* ---- Neutrals (light theme) ---- */
+  --ink:#16212e;        /* primary text + headings (≈15:1 on --bg) */
+  --muted:#54616f;      /* secondary text */
+  --dim:#8a96a4;        /* tertiary text / labels */
+  --line:rgba(20,33,48,.10);   /* hairline borders */
+  --line2:rgba(20,33,48,.16);  /* stronger borders / inputs */
+  --bg:#f6f8fc;         /* page background */
+
+  /* ---- Dark ink surfaces (dark cards, section/divider slides) ---- */
+  --ink-900:#0d1320;
+  --ink-800:#1b2738;
+
+  /* ---- Semantic ---- */
+  --gold:#b45309;       /* warning / highlight */
+  /* success = var(--greenD) · info = var(--blue) · danger = var(--vng) */
+
+  /* ---- Elevation ---- */
+  --soft:0 4px 14px rgba(20,33,48,.07);
+  --lift:0 18px 44px rgba(20,33,48,.12);
+
+  /* ---- Radius ---- */
+  --r-input:11px;
+  --r-btn:12px;
+  --r-btn-sm:10px;
+  --r-card:18px;
+  --r-pill:99px;
+
+  /* ---- Type ---- */
+  --font-display:'Space Grotesk', system-ui, sans-serif;   /* headings, logo, eyebrows, buttons */
+  --font-body:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* ---- Signature gradients & background wash ---- */
+  --grad-brand:linear-gradient(120deg, var(--vng), var(--vng2));                    /* primary buttons */
+  --grad-signature:linear-gradient(118deg,#0ea869,#10b981 30%,#0a86e0 72%,#0068ff); /* hero text, ONE key accent per view */
+  --grad-progress:linear-gradient(90deg, var(--green), var(--blue));                /* progress bars / dividers */
+  --bg-wash:
+    radial-gradient(720px 420px at 0% -8%, rgba(16,185,129,.10), transparent 60%),
+    radial-gradient(720px 420px at 100% -2%, rgba(0,104,255,.10), transparent 60%);
+}
+
+/* Drop-in helpers ------------------------------------------------ */
+
+/* Heading / display text */
+.q-display{font-family:var(--font-display);letter-spacing:-.02em;line-height:1.08;color:var(--ink)}
+
+/* The one-phrase gradient highlight — use sparingly (a single phrase per view) */
+.q-grad{
+  background:var(--grad-signature);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* Uppercase orange eyebrow */
+.q-eyebrow{
+  font-family:var(--font-display);text-transform:uppercase;letter-spacing:.18em;
+  font-size:10.5px;font-weight:700;color:var(--vng);
+}
+
+/* Page background wash (light theme) */
+.q-bg{
+  background:var(--bg-wash), var(--bg);
+}

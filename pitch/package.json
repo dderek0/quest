@@ -1,0 +1,12 @@
+{
+  "name": "quest-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Quest ✦ landing / voting page — static, zero-dependency.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

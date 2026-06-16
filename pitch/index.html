@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quest ✦ — Học như chơi game, ngay trong Zalo</title>
+<meta name="description" content="Quest biến tài liệu thành nhiệm vụ học tập cá nhân hoá, ngay trong Zalo. Bốn trụ cột: đơn giản, cá nhân hoá, động lực, cho mọi người.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --vng:#f1592b; --vng2:#ff7a3c;
+  --ink:#16212e; --muted:#54616f; --dim:#8a96a4;
+  --line:rgba(20,33,48,.10); --line2:rgba(20,33,48,.16);
+  --bg:#f6f8fc; --ink900:#0d1320; --ink800:#1b2738;
+  --green:#10b981; --blue:#0068ff;
+  --soft:0 4px 14px rgba(20,33,48,.07); --lift:0 18px 44px rgba(20,33,48,.12);
+  --grad:linear-gradient(118deg,#0ea869,#10b981 30%,#0a86e0 72%,#0068ff);
+  --brandgrad:linear-gradient(120deg,#f1592b,#ff7a3c);
+  --xpgrad:linear-gradient(90deg,#10b981,#0068ff);
+  --rcard:18px; --rbtn:12px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; font-family:'Inter',system-ui,sans-serif; color:var(--ink); line-height:1.55; -webkit-font-smoothing:antialiased; background:var(--bg); overflow-x:hidden}
+.wrap{max-width:1140px; margin:0 auto; padding:0 22px}
+.display{font-family:'Space Grotesk','Inter',sans-serif; letter-spacing:-.02em; line-height:1.06; font-weight:700}
+.eyebrow{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--vng)}
+.grad{background:var(--grad); background-size:220% 220%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:flow 9s ease infinite}
+@keyframes flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* layered backdrop: aurora wash (-2) + constellation canvas (-1) */
+.aurora{position:fixed; inset:0; z-index:-2; overflow:hidden; pointer-events:none}
+.aurora span{position:absolute; border-radius:50%; filter:blur(72px); opacity:.5}
+.aurora .a1{width:46vw;height:46vw;left:-8vw;top:-12vw;background:radial-gradient(circle,rgba(16,185,129,.5),transparent 68%);animation:drift1 24s ease-in-out infinite alternate}
+.aurora .a2{width:48vw;height:48vw;right:-12vw;top:-8vw;background:radial-gradient(circle,rgba(0,104,255,.46),transparent 68%);animation:drift2 28s ease-in-out infinite alternate}
+.aurora .a3{width:40vw;height:40vw;left:34vw;top:30vw;background:radial-gradient(circle,rgba(241,89,43,.28),transparent 70%);animation:drift3 30s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(8vw,6vw) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-7vw,9vw) scale(1.1)}}
+@keyframes drift3{to{transform:translate(5vw,-7vw) scale(1.18)}}
+#net{position:fixed; inset:0; z-index:-1; pointer-events:none}
+
+/* big drifting deco sparkles (scroll-parallax) */
+.deco{position:absolute; font-style:normal; color:var(--vng); opacity:.10; pointer-events:none; z-index:0; font-size:clamp(80px,12vw,150px); line-height:1; will-change:transform}
+
+.progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:var(--grad);background-size:200%;transition:width .08s linear}
+
+.wm{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-.02em;font-size:23px;color:var(--ink);white-space:nowrap}
+.wm .star{color:var(--vng);margin-left:1px;display:inline-block;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+header{position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.3) blur(12px);background:rgba(246,248,252,.74);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:62px;gap:12px}
+.navbtns{display:flex;align-items:center;gap:10px}
+
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;border-radius:var(--rbtn);padding:13px 20px;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,background .18s ease;white-space:nowrap}
+.btn:focus-visible{outline:3px solid rgba(0,104,255,.45);outline-offset:2px}
+.btn.sm{padding:10px 15px;font-size:14px}
+.btn.primary{background:var(--brandgrad);color:#fff;box-shadow:0 8px 22px rgba(241,89,43,.28)}
+.btn.primary:hover{box-shadow:0 16px 34px rgba(241,89,43,.36)}
+.btn.primary::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-18deg)}
+.btn.primary:hover::after{animation:sheen .8s ease}
+@keyframes sheen{to{left:140%}}
+.btn.pulse{animation:glow 2.8s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 8px 22px rgba(241,89,43,.28)}50%{box-shadow:0 10px 30px rgba(241,89,43,.55)}}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line2);box-shadow:var(--soft)}
+.btn.ghost:hover{transform:translateY(-2px);box-shadow:var(--lift)}
+.btn.outline-light{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+.btn.outline-light:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
+
+/* hero */
+.hero{position:relative;padding:clamp(48px,7vw,90px) 0 clamp(40px,6vw,72px)}
+.hero .wrap{position:relative;z-index:1}
+.hero-grid{display:flex;gap:clamp(28px,5vw,56px);align-items:center}
+.hero-grid>div:first-child{flex:1 1 0;min-width:0}
+.hero h1{font-size:clamp(33px,5.4vw,58px);margin:16px 0 0;max-width:15ch}
+.rotwrap{display:block;min-height:1.1em}
+#rotw{display:inline-block;transition:opacity .35s ease,transform .35s ease}
+.hero .lead{color:var(--muted);font-size:clamp(16px,1.9vw,18.5px);line-height:1.6;margin:18px 0 0;max-width:40ch}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.note{margin-top:16px;color:var(--muted);font-size:13.5px;font-weight:500}
+
+/* chat mockup */
+.mock{position:relative;flex:0 0 360px;max-width:100%}
+.mock .ring{position:absolute;inset:-14% -10%;border-radius:50%;background:var(--grad);filter:blur(46px);opacity:.28;z-index:-1;animation:floatcard 9s ease-in-out infinite}
+.phone{position:relative;background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:var(--lift);padding:14px;animation:floatcard 6s ease-in-out infinite}
+@keyframes floatcard{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.chat-head{display:flex;align-items:center;gap:10px;padding:4px 6px 12px;border-bottom:1px solid var(--line)}
+.chat-head .av{width:32px;height:32px;border-radius:10px;background:var(--brandgrad);display:grid;place-items:center;color:#fff;font-size:16px;font-weight:700}
+.chat-head b{font-family:'Space Grotesk',sans-serif;font-size:14px}
+.chat-head small{display:block;color:var(--green);font-size:11px;font-weight:600}
+.msgs{display:flex;flex-direction:column;gap:10px;padding:14px 4px 4px}
+.bubble{opacity:0;transform:translateY(12px) scale(.96)}
+.mock.run .bubble{animation:bubblein .55s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes bubblein{to{opacity:1;transform:none}}
+.bot{align-self:flex-start;max-width:90%;background:#eef2f7;color:var(--ink);font-size:13.5px;padding:10px 13px;border-radius:4px 15px 15px 15px}
+.mock.run .bot{animation-delay:.25s}
+.qcard{align-self:stretch;background:#fff;border:1px solid var(--line2);border-left:3px solid var(--vng);border-radius:13px;padding:13px 14px;box-shadow:var(--soft)}
+.mock.run .qcard{animation-delay:.85s}
+.qcard .qt{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14.5px}
+.qcard .qm{color:var(--muted);font-size:12px;margin:5px 0 9px}
+.xp{position:relative;height:7px;border-radius:5px;background:#eef2f7;overflow:hidden}
+.xp i{display:block;height:100%;width:0;border-radius:5px;background:var(--xpgrad)}
+.mock.run .xp i{animation:fillxp 1.4s cubic-bezier(.3,.7,.2,1) 1.4s forwards}
+@keyframes fillxp{to{width:74%}}
+.xp::after{content:"";position:absolute;top:0;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:xpsheen 2.6s ease-in-out 2.6s infinite}
+@keyframes xpsheen{0%{left:-40%}60%,100%{left:120%}}
+.qbtn{margin-top:11px;display:inline-block;background:var(--brandgrad);color:#fff;font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:9px}
+.typing{align-self:flex-start;background:#eef2f7;border-radius:14px;padding:12px 14px;display:flex;gap:5px}
+.mock.run .typing{animation-delay:1.9s}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--dim);animation:bounce 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.badge{position:absolute;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12.5px;padding:8px 12px;border-radius:12px;box-shadow:var(--lift);opacity:0}
+.badge.lvl{top:-16px;right:-6px;background:var(--brandgrad);color:#fff}
+.badge.streak{bottom:30px;left:-18px;background:#fff;border:1px solid var(--line);color:var(--ink)}
+.mock.run .lvl{animation:badgein .6s 2.2s forwards, floatcard 5s ease-in-out 2.9s infinite}
+.mock.run .streak{animation:badgein .6s 2.5s forwards, floatcard 6s ease-in-out 3.2s infinite}
+@keyframes badgein{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+
+/* sections */
+section{position:relative;padding:clamp(56px,8vw,104px) 0}
+.shead{max-width:36ch}
+.shead h2{font-size:clamp(27px,4.2vw,42px);margin:12px 0 0}
+.shead p{color:var(--muted);font-size:17px;margin:14px 0 0;max-width:48ch}
+
+/* video */
+.video{position:relative;margin-top:clamp(28px,4vw,44px);aspect-ratio:16/9;border-radius:22px;overflow:hidden;border:1px solid var(--line2);box-shadow:var(--lift);background:radial-gradient(120% 120% at 50% 0%,#21314a,var(--ink900))}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:24px}
+.play{position:relative;width:86px;height:86px;border-radius:50%;background:var(--brandgrad);display:grid;place-items:center;box-shadow:0 14px 40px rgba(241,89,43,.45);transition:transform .2s ease}
+.play::before,.play::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(241,89,43,.5);animation:pulsering 2.6s ease-out infinite}
+.play::after{animation-delay:1.3s}
+@keyframes pulsering{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.1);opacity:0}}
+.video:hover .play{transform:scale(1.07)}
+.play svg{margin-left:5px}
+.cap{color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(15px,2vw,18px)}
+.cap small{display:block;color:rgba(255,255,255,.62);font-family:'Inter',sans-serif;font-weight:500;font-size:13px;margin-top:5px;letter-spacing:0}
+
+/* pillars (3D tilt) */
+.grid{display:grid;gap:16px;margin-top:clamp(30px,4vw,48px);grid-template-columns:repeat(4,1fr)}
+.pillar{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--rcard);box-shadow:var(--soft);padding:24px;transform-style:preserve-3d;transition:transform .25s ease,box-shadow .25s ease}
+.pillar:hover{box-shadow:var(--lift)}
+.pillar::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:3px;background:var(--ac)}
+.pillar .tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.pillar .ic{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;color:var(--ac);background:var(--acbg);margin:12px 0 14px;transition:transform .25s ease}
+.pillar:hover .ic{transform:rotate(-6deg) scale(1.08)}
+.pillar h3{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;margin:0 0 7px}
+.pillar p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.p1{--ac:#f1592b;--acbg:rgba(241,89,43,.12)}
+.p2{--ac:#0a9d6e;--acbg:rgba(16,185,129,.14)}
+.p3{--ac:#0068ff;--acbg:rgba(0,104,255,.12)}
+.p4{--ac:#0a86e0;--acbg:linear-gradient(150deg,rgba(16,185,129,.16),rgba(0,104,255,.14))}
+.p4::before{background:var(--grad)}
+.p4 .tag{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* how it works + flow connector */
+.steps{position:relative;display:grid;gap:16px;margin-top:clamp(30px,4vw,48px);grid-template-columns:repeat(4,1fr)}
+.steps::before{content:"";position:absolute;top:39px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--line2) 0 7px,transparent 7px 14px)}
+.steps::after{content:"";position:absolute;top:35px;left:12%;width:10px;height:10px;border-radius:50%;background:var(--vng);box-shadow:0 0 0 4px rgba(241,89,43,.18);animation:travel 5s linear infinite}
+@keyframes travel{0%{left:12%}100%{left:88%}}
+.step{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--rcard);padding:24px 22px;box-shadow:var(--soft);transition:transform .25s ease,box-shadow .25s ease}
+.step:hover{transform:translateY(-5px);box-shadow:var(--lift)}
+.step .n{position:relative;z-index:1;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#fff;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--ink);margin-bottom:14px}
+.step h3{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16.5px;margin:0 0 6px}
+.step p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:clamp(28px,4vw,44px);background:#fff;border:1px solid var(--line);border-radius:var(--rcard);box-shadow:var(--soft);padding:clamp(22px,3vw,34px)}
+.stat{text-align:center}
+.stat b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,38px);letter-spacing:-.02em}
+.stat span{display:block;color:var(--muted);font-size:13.5px;margin-top:4px}
+
+/* how-to-use guide */
+.guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:clamp(30px,4vw,48px)}
+.track{background:#fff;border:1px solid var(--line);border-radius:var(--rcard);box-shadow:var(--soft);padding:26px;transition:transform .25s ease,box-shadow .25s ease}
+.track:hover{transform:translateY(-5px);box-shadow:var(--lift)}
+.track .thead{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px}
+.track .thead .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;background:var(--brandgrad);flex:none}
+.track .thead .ic.b{background:linear-gradient(135deg,#10b981,#0068ff)}
+.track ol{counter-reset:g;list-style:none;margin:18px 0 0;padding:0}
+.track li{counter-increment:g;position:relative;padding-left:40px;margin:0 0 14px;color:var(--muted);font-size:14.5px;line-height:1.55}
+.track li:last-child{margin-bottom:0}
+.track li::before{content:counter(g);position:absolute;left:0;top:-2px;width:27px;height:27px;border-radius:8px;background:var(--bg);border:1px solid var(--line2);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;display:grid;place-items:center}
+.track li b{color:var(--ink)}
+.guide-cta{margin-top:clamp(22px,3vw,30px);text-align:center}
+@media(max-width:760px){.guide-grid{grid-template-columns:1fr}}
+
+/* final cta */
+.final .panel{position:relative;overflow:hidden;border-radius:26px;padding:clamp(42px,6vw,76px) clamp(26px,5vw,64px);color:#fff;text-align:center;background:linear-gradient(160deg,var(--ink800),var(--ink900))}
+.final .panel::before{content:"";position:absolute;inset:-30%;background:radial-gradient(40% 50% at 30% 20%,rgba(16,185,129,.4),transparent 60%),radial-gradient(40% 50% at 76% 96%,rgba(0,104,255,.42),transparent 60%);animation:breathe 8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.12);opacity:1}}
+.final .panel::after{content:"";position:absolute;inset:0;background:radial-gradient(300px circle at var(--mx,50%) var(--my,30%),rgba(255,255,255,.12),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.final .panel:hover::after{opacity:1}
+.final .panel>*{position:relative;z-index:1}
+.final .wm{color:#fff;font-size:26px}
+.final h2{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-.02em;font-size:clamp(28px,4.4vw,44px);margin:16px auto 0;max-width:18ch;line-height:1.1}
+.final p{color:rgba(255,255,255,.76);font-size:17px;margin:14px auto 0;max-width:42ch}
+.final .cta{justify-content:center}
+
+footer{padding:40px 0 56px;text-align:center;color:var(--dim);font-size:13px}
+footer b{color:var(--muted)}
+
+[data-reveal]{opacity:0;transform:translateY(22px) scale(.985);transition:opacity .65s cubic-bezier(.2,.7,.2,1),transform .65s cubic-bezier(.2,.7,.2,1)}
+[data-reveal].in{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .hero-grid{flex-direction:column;align-items:stretch}
+  .mock{flex:0 0 auto;width:100%;max-width:400px;margin:8px auto 0;order:2}
+  .grid,.steps{grid-template-columns:repeat(2,1fr)}
+  .steps::before,.steps::after{display:none}
+  .stats{grid-template-columns:repeat(2,1fr);gap:24px 16px}
+}
+@media(max-width:560px){
+  .hide-xs{display:none}
+  .grid,.steps{grid-template-columns:1fr}
+  .cta .btn{flex:1 1 100%;justify-content:center}
+  .bar{height:58px;gap:8px}.bar .wm{font-size:19px}
+  .navbtns{gap:8px}.navbtns .btn{padding:9px 12px}
+  .deco{display:none}
+}
+@media(max-width:400px){
+  .wrap{padding:0 16px}
+  .bar .wm{font-size:18px}
+  .navbtns{gap:6px}.navbtns .btn.sm{padding:9px 11px;font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition-duration:.001ms!important}
+  [data-reveal]{opacity:1;transform:none}
+  .aurora span{display:none} #net{display:none}
+  .bubble{opacity:1!important;transform:none!important} .badge{opacity:1!important} .xp i{width:74%!important}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="bar"></div>
+<div class="aurora"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+<canvas id="net"></canvas>
+
+<header>
+  <div class="wrap bar">
+    <span class="wm">QUEST<span class="star">✦</span></span>
+    <nav class="navbtns">
+      <a class="btn ghost sm" href="https://zalo.me/506726368996906983?src=qr" target="_blank" rel="noopener" aria-label="Chat với bot trên Zalo">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+        <span class="hide-xs">Chat với bot</span>
+      </a>
+      <!-- VOTE: thay href="#vote" bằng link bình chọn thật -->
+      <a class="btn primary sm" href="#vote">Bình chọn<span class="hide-xs"> cho Quest</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <i class="deco" data-par="0.18" style="left:-3%;top:8%">✦</i>
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow" data-reveal>GreenNode Claw-a-thon · Trợ lý học tập AI</div>
+          <h1 class="display" data-reveal>Biến tài liệu thành<span class="rotwrap"><span id="rotw" class="grad">nhiệm vụ học tập</span></span></h1>
+          <p class="lead" data-reveal>Quest sống ngay trong Zalo. Người dẫn đường tải tài liệu, AI biến thành nhiệm vụ cá nhân hoá cho từng học viên — 5 phút mỗi ngày, có XP, cấp độ và một bảng theo dõi cả lớp.</p>
+          <div class="cta" data-reveal>
+            <a class="btn primary pulse mag" href="#vote">Bình chọn cho Quest ✦</a>
+            <a class="btn ghost" href="#demo"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Xem demo</a>
+          </div>
+          <div class="note" data-reveal>Không cần cài app · Không cần đăng nhập · Tiếng Việt</div>
+        </div>
+
+        <!-- animated Zalo chat mockup -->
+        <div class="mock" data-reveal aria-hidden="true">
+          <div class="ring"></div>
+          <div class="phone">
+            <div class="chat-head"><span class="av">✦</span><span><b>Bot QUEST AI</b><small>● đang hoạt động</small></span></div>
+            <div class="msgs">
+              <div class="bubble bot">🎯 Nhiệm vụ mới đã sẵn sàng cho bạn!</div>
+              <div class="bubble qcard">
+                <div class="qt">Chính sách AI · Tuần này</div>
+                <div class="qm">⏱ 5 phút · 🧩 5 câu · ⭐ +120 XP</div>
+                <div class="xp"><i></i></div>
+                <span class="qbtn">⚔️ Mở nhiệm vụ</span>
+              </div>
+              <div class="bubble typing"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <span class="badge lvl">Lv 3 ▲</span>
+          <span class="badge streak">🔥 6 ngày</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO VIDEO -->
+  <section id="demo">
+    <i class="deco" data-par="0.12" style="right:-2%;top:14%">✦</i>
+    <div class="wrap">
+      <div class="shead" data-reveal><div class="eyebrow">Demo</div><h2 class="display">Xem Quest chạy trong 90 giây</h2></div>
+      <div class="video" data-reveal>
+        <!-- VIDEO: khi có bản demo, thay cả khối .ph dưới bằng:
+             <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Quest demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+        <div class="ph">
+          <div class="play"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="cap">Video demo sắp lên sóng<small>Sẽ nhúng ngay tại đây</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 PILLARS -->
+  <section id="pillars">
+    <div class="wrap">
+      <div class="shead" data-reveal><div class="eyebrow">Bốn trụ cột</div><h2 class="display">Một hệ thống, bốn lý do để tin</h2></div>
+      <div class="grid">
+        <div class="pillar p1" data-reveal>
+          <div class="tag">Trụ cột 1</div>
+          <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+          <h3>Đơn giản</h3>
+          <p>Không cài app, không đăng nhập, không thao tác thừa. Một tin nhắn Zalo kèm link là vào học ngay.</p>
+        </div>
+        <div class="pillar p2" data-reveal>
+          <div class="tag">Trụ cột 2</div>
+          <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg></div>
+          <h3>Cá nhân hoá &amp; theo dõi</h3>
+          <p>Hồ sơ thành thạo riêng cho từng người, nhiệm vụ tự khớp độ khó — và Người dẫn đường thấy cả lớp trên một bảng theo dõi.</p>
+        </div>
+        <div class="pillar p3" data-reveal>
+          <div class="tag">Trụ cột 3</div>
+          <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M9 18h6M12 14v4M9 21h6"/></svg></div>
+          <h3>Thúc đẩy động lực</h3>
+          <p>Anh hùng nhận XP, lên cấp, giữ chuỗi ngày. Lời nhắc cá nhân hoá — trung thực, không tạo áp lực giả tạo.</p>
+        </div>
+        <div class="pillar p4" data-reveal>
+          <div class="tag">Trụ cột 4</div>
+          <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg></div>
+          <h3>Phù hợp với mọi người</h3>
+          <p>100% tiếng Việt, thuật ngữ thân thiện, chạy trên thiết bị cơ bản. Chi phí AI thấp để chạm tới nhiều lớp học hơn.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <i class="deco" data-par="0.16" style="left:-2%;bottom:6%">✦</i>
+    <div class="wrap">
+      <div class="shead" data-reveal><div class="eyebrow">Cách hoạt động</div><h2 class="display">Bốn bước, một vòng lặp</h2></div>
+      <div class="steps">
+        <div class="step" data-reveal><div class="n">1</div><h3>Tải tài liệu</h3><p>Người dẫn đường tải PDF / DOCX hoặc dán văn bản — file không được lưu lại.</p></div>
+        <div class="step" data-reveal><div class="n">2</div><h3>AI dựng nhiệm vụ</h3><p>AI tách khái niệm và soạn câu hỏi thành một Course Pack.</p></div>
+        <div class="step" data-reveal><div class="n">3</div><h3>Gửi qua Zalo</h3><p>Bot gửi nhiệm vụ cá nhân hoá; học viên chạm để làm bài 5 phút.</p></div>
+        <div class="step" data-reveal><div class="n">4</div><h3>Tự điều chỉnh</h3><p>Mastery cập nhật → bảng theo dõi và nhiệm vụ kế tiếp tinh chỉnh theo từng người.</p></div>
+      </div>
+      <div class="stats" data-reveal>
+        <div class="stat"><b class="grad" data-count="5" data-suffix=" phút">0</b><span>mỗi nhiệm vụ</span></div>
+        <div class="stat"><b data-count="0" data-suffix="">0</b><span>bước cài đặt</span></div>
+        <div class="stat"><b data-count="100" data-suffix="%">0</b><span>tiếng Việt</span></div>
+        <div class="stat"><b data-count="3" data-suffix="">0</b><span>mô hình AI định tuyến</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO USE / GUIDE -->
+  <section id="guide">
+    <i class="deco" data-par="0.13" style="right:-1%;top:18%">✦</i>
+    <div class="wrap">
+      <div class="shead" data-reveal><div class="eyebrow">Hướng dẫn</div><h2 class="display">Bắt đầu trong 3 bước</h2></div>
+      <div class="guide-grid">
+        <div class="track" data-reveal>
+          <div class="thead"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V8M9 11l3-3 3 3"/><path d="M20 16.5A4.5 4.5 0 0 0 17 8a6 6 0 0 0-11.3 2A4 4 0 0 0 6 18h12"/></svg></span> Người dẫn đường</div>
+          <ol>
+            <li>Mở bot <b>Quest</b> trên Zalo, gõ <b>tạo lớp</b>.</li>
+            <li>Tải tài liệu (PDF / DOCX / dán) rồi bấm tạo nhiệm vụ — AI lo phần còn lại.</li>
+            <li>Gửi <b>mã mời</b> cho học viên. Xong, lớp đã chạy!</li>
+          </ol>
+        </div>
+        <div class="track" data-reveal>
+          <div class="thead"><span class="ic b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor" stroke="none"/></svg></span> Anh hùng (học viên)</div>
+          <ol>
+            <li>Mở bot <b>Quest</b> trên Zalo — bấm nút <b>Chat với bot</b> ở trên cùng.</li>
+            <li>Gửi <b>mã mời</b> từ Người dẫn đường để vào lớp.</li>
+            <li>Chạm vào link nhiệm vụ — học 5 phút, nhận XP mỗi ngày.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-cta" data-reveal>
+        <a class="btn primary mag" href="https://zalo.me/506726368996906983?src=qr" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+          Chat với bot để bắt đầu
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="vote" class="final">
+    <div class="wrap">
+      <div class="panel" id="ctapanel" data-reveal>
+        <span class="wm">QUEST<span class="star">✦</span></span>
+        <h2>Thích Quest? Bình chọn cho tụi mình ✦</h2>
+        <p>Một phiếu bầu giúp việc học chạm tới nhiều người hơn — ngay trong app họ đã dùng mỗi ngày.</p>
+        <div class="cta">
+          <!-- VOTE: thay href="#" bằng link bình chọn thật -->
+          <a class="btn primary pulse mag" href="#">Bình chọn cho Quest</a>
+          <a class="btn outline-light" href="https://zalo.me/506726368996906983?src=qr" target="_blank" rel="noopener">Chat với bot trên Zalo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><b>QUEST✦</b> · trợ lý học tập AI trên Zalo · GreenNode Claw-a-thon</div></footer>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hover  = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* scroll progress */
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement.scrollHeight-innerHeight; bar.style.width=(h>0?(scrollY/h*100):0)+'%';}
+  /* scroll parallax for .deco sparkles */
+  var pars=[].slice.call(document.querySelectorAll('[data-par]'));
+  function par(){ if(reduce)return; for(var i=0;i<pars.length;i++){ pars[i].style.transform='translateY('+(scrollY*+pars[i].dataset.par*-1)+'px)'; } }
+  var st=false;
+  addEventListener('scroll',function(){ if(!st){ requestAnimationFrame(function(){prog();par();st=false;}); st=true; } },{passive:true});
+  prog(); par();
+
+  /* count-up */
+  function count(el){
+    var target=+el.dataset.count, suf=el.dataset.suffix||'', dur=1100, t0=null;
+    if(reduce||target===0){el.textContent=target+suf;return;}
+    requestAnimationFrame(function s(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*target)+suf;if(p<1)requestAnimationFrame(s);});
+  }
+  /* reveal + mockup play */
+  var els=document.querySelectorAll('[data-reveal]');
+  function playMock(m){ if(reduce){m.classList.add('run');return;} m.classList.remove('run'); void m.offsetWidth; m.classList.add('run'); }
+  if(reduce||!('IntersectionObserver' in window)){
+    els.forEach(function(el){el.classList.add('in');});
+    document.querySelectorAll('[data-count]').forEach(count);
+    var mk0=document.querySelector('.mock'); if(mk0) mk0.classList.add('run');
+  } else {
+    var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){
+      e.target.classList.add('in');
+      if(e.target.querySelectorAll)e.target.querySelectorAll('[data-count]').forEach(count);
+      if(e.target.classList.contains('mock')){ playMock(e.target); setInterval(function(){playMock(e.target);},7000); }
+      io.unobserve(e.target);
+    }});},{threshold:.14,rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(el,i){if(el.closest('.hero'))el.style.transitionDelay=(i*80)+'ms';io.observe(el);});
+  }
+
+  /* rotating headline word */
+  var rot=document.getElementById('rotw');
+  if(rot && !reduce){
+    var words=['nhiệm vụ học tập','một cuộc phiêu lưu','thói quen mỗi ngày'], wi=0;
+    setInterval(function(){
+      rot.style.opacity='0'; rot.style.transform='translateY(10px)';
+      setTimeout(function(){ wi=(wi+1)%words.length; rot.textContent=words[wi]; rot.style.opacity='1'; rot.style.transform='none'; },360);
+    },3000);
+  }
+
+  if(reduce) return;
+
+  /* 3D tilt on pillars + magnetic primary buttons (pointer devices only) */
+  if(hover){
+    document.querySelectorAll('.pillar').forEach(function(c){
+      c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform='perspective(720px) rotateX('+(-y*7)+'deg) rotateY('+(x*7)+'deg) translateY(-4px)';});
+      c.addEventListener('pointerleave',function(){c.style.transform='';});
+    });
+    document.querySelectorAll('.btn.mag').forEach(function(b){
+      b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.18)+'px,'+((e.clientY-r.top-r.height/2)*.30)+'px)';});
+      b.addEventListener('pointerleave',function(){b.style.transform='';});
+    });
+    var panel=document.getElementById('ctapanel');
+    if(panel){ panel.addEventListener('pointermove',function(e){var r=panel.getBoundingClientRect();panel.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');panel.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');}); }
+  }
+
+  /* constellation canvas: drifting nodes (+ ✦) linked by lines, cursor-reactive */
+  var cv=document.getElementById('net'), ctx=cv&&cv.getContext('2d');
+  if(ctx){
+    var w,h,dpr,parts,raf,mx=-999,my=-999;
+    var mobile=matchMedia('(max-width:760px)').matches;
+    var N=mobile?20:Math.min(72,Math.round(innerWidth*innerHeight/22000));
+    var LINK=(mobile?92:130);
+    var COL=['16,185,129','0,104,255','241,89,43'];
+    function size(){dpr=Math.min(devicePixelRatio||1,2);w=cv.width=innerWidth*dpr;h=cv.height=innerHeight*dpr;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
+    function make(){parts=[];for(var i=0;i<N;i++)parts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.28*dpr,vy:(Math.random()-.5)*.28*dpr,r:(Math.random()*1.5+1)*dpr,c:COL[i%3],s:Math.random()<.2});}
+    function star(x,y,r){ctx.moveTo(x,y-r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.quadraticCurveTo(x,y,x,y+r);ctx.quadraticCurveTo(x,y,x-r,y);ctx.quadraticCurveTo(x,y,x,y-r);}
+    function frame(){
+      ctx.clearRect(0,0,w,h);
+      var lk=LINK*dpr;
+      for(var i=0;i<parts.length;i++){var p=parts[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+        ctx.beginPath();
+        if(p.s){star(p.x,p.y,p.r*2.6);ctx.fillStyle='rgba('+p.c+',.55)';}
+        else{ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fillStyle='rgba('+p.c+',.45)';}
+        ctx.fill();
+      }
+      for(var a=0;a<parts.length;a++)for(var b=a+1;b<parts.length;b++){var dx=parts[a].x-parts[b].x,dy=parts[a].y-parts[b].y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<lk){ctx.strokeStyle='rgba(90,120,160,'+(.13*(1-d/lk))+')';ctx.lineWidth=dpr;ctx.beginPath();ctx.moveTo(parts[a].x,parts[a].y);ctx.lineTo(parts[b].x,parts[b].y);ctx.stroke();}}
+      if(mx>0){var mr=170*dpr;for(var k=0;k<parts.length;k++){var ex=parts[k].x-mx*dpr,ey=parts[k].y-my*dpr,ed=Math.sqrt(ex*ex+ey*ey);
+        if(ed<mr){ctx.strokeStyle='rgba(241,89,43,'+(.2*(1-ed/mr))+')';ctx.lineWidth=dpr;ctx.beginPath();ctx.moveTo(parts[k].x,parts[k].y);ctx.lineTo(mx*dpr,my*dpr);ctx.stroke();}}}
+      raf=requestAnimationFrame(frame);
+    }
+    size();make();frame();
+    var rz;addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){cancelAnimationFrame(raf);size();make();frame();},200);},{passive:true});
+    if(hover)addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY;},{passive:true});
+    document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(raf);else{cancelAnimationFrame(raf);frame();}});
+  }
+})();
+</script>
+</body>
+</html>

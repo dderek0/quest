@@ -1,0 +1,56 @@
+# ── Secrets ──────────────────────────────────────────────────────────────────
+# Never commit real env. The template (.env.example) IS committed.
+.env
+.env.*
+!.env.example
+
+# ── Node / TypeScript ────────────────────────────────────────────────────────
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Test / coverage ──────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Caches / tmp ─────────────────────────────────────────────────────────────
+.cache/
+tmp/
+*.pid
+
+# ── Editor / OS ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+.DS_Store
+.AppleDouble
+Thumbs.db
+ehthumbs.db
+
+# ── Local agent / tooling config (per-user) ──────────────────────────────────
+.claude/settings.local.json
+
+# ── Internal notes / planning (chain-of-thought, local only) ──────────────────
+notes/
+
+# ── Marketing / pitch deliverables (local only) ───────────────────────────────
+materials/
+
+# ── Generated deliverables & throwaway test media (commit source, not outputs) ─
+*.pdf
+public/assets/hello.*
+
+# Unrelated local project (separate git repo)
+my-video/
