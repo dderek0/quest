@@ -95,7 +95,19 @@ export function selectQuestionsForMember(
     }
     if (!added) break; // every concept's queue exhausted
   }
-  return out;
+
+  // Shuffle each MCQ's options so the correct answer isn't always in the same slot. The generator
+  // (LLM) tends to list the correct option FIRST, so unshuffled it reads as a fixed A,A,A… pattern.
+  // Seeded per (member-seed, question id) → stable within an attempt, varies across learners/attempts.
+  // Grading is by option TEXT (assess.gradeObjective), so reordering never affects correctness.
+  return out.map((q) => shuffleOptions(q, seed));
+}
+
+function shuffleOptions(q: Question, seed?: string): Question {
+  if (q.type !== 'mcq' || !q.options || q.options.length < 2) return q;
+  const r = makeRng(`${seed ?? 'opt'}:${q.id}`);
+  const options = q.options.map((o) => ({ o, k: r() })).sort((a, b) => a.k - b.k).map((x) => x.o);
+  return { ...q, options };
 }
 
 // The concept a member most needs to work on — used to personalize nudges.

@@ -7,6 +7,7 @@ export type MemberAgg = {
   id: string; name: string; role?: string;
   answered: number; correct: number; correctRate: number;
   avgMastery: number; mastered: number;
+  streak: number; optedIn: boolean; // optedIn = name visible to peers on the leaderboard
   status: 'not_started' | 'behind' | 'on_track';
 };
 export type ClassAgg = {
@@ -25,6 +26,7 @@ export async function aggregateClass(classId: string, course: CoursePack | null)
   const memberAggs: MemberAgg[] = members.map((m) => {
     const st = stats[m.id] || { answered: 0, correct: 0 };
     const mastery = m.mastery || {};
+    const eng = m.engagement || {};
     const pLs = conceptIds.map((cid) => mastery[cid]?.pL ?? 0);
     const avg = pLs.length ? pLs.reduce((a, b) => a + b, 0) / pLs.length : 0;
     const mastered = pLs.filter((p) => p >= 0.8).length;
@@ -35,7 +37,9 @@ export async function aggregateClass(classId: string, course: CoursePack | null)
       id: m.id, name: m.name || m.id, role: m.role,
       answered: st.answered, correct: st.correct,
       correctRate: st.answered ? st.correct / st.answered : 0,
-      avgMastery: avg, mastered, status,
+      avgMastery: avg, mastered,
+      streak: eng.streak || 0, optedIn: !!eng.lb,
+      status,
     };
   });
 

@@ -33,6 +33,16 @@ textarea:focus{outline:0;border-color:var(--vng);box-shadow:0 0 0 3px rgba(241,8
 .fb.no{color:var(--gold);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3)}
 .fb .ex{margin-top:6px;font-weight:400;color:var(--muted);font-size:12.5px;line-height:1.5}
 .done{text-align:center}.done .big{font-family:'Space Grotesk',sans-serif;font-size:25px;font-weight:700;margin-bottom:6px}.muted{color:var(--muted);font-size:12.5px}
+.lbcard{margin-top:14px;padding:16px}
+.lbh{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:10px}
+.lrow{display:flex;align-items:center;gap:9px;padding:7px 0;font-size:13.5px}.lrow+.lrow{border-top:1px solid var(--line)}
+.lrow.me{background:rgba(0,104,255,.06);border-radius:10px;padding-left:8px;padding-right:8px;margin:0 -8px;font-weight:700}
+.lmd{width:24px;text-align:center;font-size:15px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.lnm{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lbar{width:70px;height:8px;border-radius:99px;background:#eef2f7;overflow:hidden;flex:none}.lbar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--blue))}
+.lpc{width:38px;text-align:right;font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted)}
+.lbtn{display:block;width:100%;margin-top:13px;background:#fff;color:var(--blue);border:1.5px solid var(--line2);font-weight:700;font-family:'Space Grotesk',sans-serif;font-size:13px;padding:10px;border-radius:11px;cursor:pointer;min-height:42px}
+.lbtn:disabled{opacity:.6}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
 `;
 
@@ -70,13 +80,25 @@ async function onGo(){
   go.textContent=(i+1<DATA.questions.length)?'C\\u00E2u ti\\u1EBFp theo \\u2192':'Ho\\u00E0n th\\u00E0nh \\uD83C\\uDF89';
  } else { i++; if(i>=DATA.questions.length)done(); else render(); }
 }
+function lb(){
+ if(!DATA.leaderboard||!DATA.leaderboard.length)return '';
+ var rows=DATA.leaderboard.map(function(e){
+  var md=e.rank===1?'\\uD83E\\uDD47':e.rank===2?'\\uD83E\\uDD48':e.rank===3?'\\uD83E\\uDD49':e.rank+'.';
+  return '<div class="lrow'+(e.you?' me':'')+'"><span class="lmd">'+md+'</span><span class="lnm">'+esc(e.name)+'</span><div class="lbar"><i style="width:'+e.mastery+'%"></i></div><span class="lpc">'+e.mastery+'%</span></div>';
+ }).join('');
+ var btn='<button class="lbtn" id="lbtoggle">'+(DATA.optedIn?'\\uD83D\\uDE48 \\u1EA8n t\\u00EAn c\\u1EE7a t\\u00F4i':'\\uD83D\\uDC41 Hi\\u1EC7n t\\u00EAn c\\u1EE7a t\\u00F4i tr\\u00EAn b\\u1EA3ng')+'</button>';
+ return '<div class="card lbcard"><div class="lbh">\\uD83C\\uDFC6 B\\u1EA3ng x\\u1EBFp h\\u1EA1ng</div>'+rows+btn+'</div>';
+}
+function wireLb(){var b=document.getElementById('lbtoggle');if(!b)return;b.onclick=async function(){b.disabled=true;
+ try{await fetch('/api/leaderboard/optin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:DATA.token,on:!DATA.optedIn})});location.reload();}catch(e){b.disabled=false;}};}
 async function done(){
  var streak=DATA.streak;
  try{var r=await (await fetch('/api/quest/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:DATA.token})})).json();if(r&&r.ok&&r.streak)streak=r.streak;}catch(e){}
  var redo=DATA.redoable?'<button class="btn" style="margin-top:14px" onclick="location.reload()">\\uD83D\\uDD01 L\\u00E0m l\\u1EA1i</button>':'';
- app.innerHTML=header()+'<div class="card done"><div class="big">\\uD83C\\uDF89 Ho\\u00E0n th\\u00E0nh!</div><p>B\\u1EA1n tr\\u1EA3 l\\u1EDDi \\u0111\\u00FAng '+correctCount+'/'+DATA.questions.length+' c\\u00E2u.</p><div class="chips" style="justify-content:center"><span class="chip lvl">C\\u1EA5p '+level+'</span><span class="chip xp">'+xp+' XP</span>'+(streak?'<span class="chip fl">\\uD83D\\uDD25 '+streak+'</span>':'')+'</div>'+redo+'<p class="muted" style="margin-top:10px">Quay l\\u1EA1i m\\u1ED7i ng\\u00E0y \\u0111\\u1EC3 gi\\u1EEF chu\\u1ED7i \\uD83D\\uDD25</p></div>';
+ app.innerHTML=header()+'<div class="card done"><div class="big">\\uD83C\\uDF89 Ho\\u00E0n th\\u00E0nh!</div><p>B\\u1EA1n tr\\u1EA3 l\\u1EDDi \\u0111\\u00FAng '+correctCount+'/'+DATA.questions.length+' c\\u00E2u.</p><div class="chips" style="justify-content:center"><span class="chip lvl">C\\u1EA5p '+level+'</span><span class="chip xp">'+xp+' XP</span>'+(streak?'<span class="chip fl">\\uD83D\\uDD25 '+streak+'</span>':'')+'</div>'+redo+'<p class="muted" style="margin-top:10px">Quay l\\u1EA1i m\\u1ED7i ng\\u00E0y \\u0111\\u1EC3 gi\\u1EEF chu\\u1ED7i \\uD83D\\uDD25</p></div>'+lb();
+ wireLb();
 }
-function masteredScreen(){app.innerHTML=header()+'<div class="card done"><div class="big">🎉 Tuyệt vời!</div><p>Bạn đã thành thạo toàn bộ nhiệm vụ hiện tại.</p><p class="muted">Quay lại khi Người dẫn đường thêm nội dung mới nhé 🔔</p></div>';}
+function masteredScreen(){app.innerHTML=header()+'<div class="card done"><div class="big">🎉 Tuyệt vời!</div><p>Bạn đã thành thạo toàn bộ nhiệm vụ hiện tại.</p><p class="muted">Quay lại khi Người dẫn đường thêm nội dung mới nhé 🔔</p></div>'+lb();wireLb();}
 if(DATA.questions.length){render();}else{masteredScreen();}
 `;
 
@@ -84,7 +106,10 @@ export function renderQuest(
   course: CoursePack,
   member: { engagement?: Record<string, number> },
   token: string,
-  meta: { title?: string; closesAt?: string | null; redoable?: boolean; attemptsLeft?: number | null } = {},
+  meta: {
+    title?: string; closesAt?: string | null; redoable?: boolean; attemptsLeft?: number | null;
+    leaderboard?: { rank: number; name: string; mastery: number; you: boolean }[]; optedIn?: boolean;
+  } = {},
 ): string {
   const eng = member.engagement || {};
   const qs = course.questions.map((q) => ({ id: q.id, conceptId: q.conceptId, type: q.type, stem: q.stem, options: q.options || [] }));
@@ -95,6 +120,7 @@ export function renderQuest(
     redoable: meta.redoable !== false,
     attemptsLeft: meta.attemptsLeft ?? null,
     xp: eng.xp || 0, level: eng.level || 1, streak: eng.streak || 0,
+    leaderboard: meta.leaderboard || [], optedIn: !!meta.optedIn,
     questions: qs,
   }).replace(/</g, '\\u003c');
   return `<!doctype html><html lang="vi"><head>

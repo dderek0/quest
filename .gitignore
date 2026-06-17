@@ -54,3 +54,4 @@ public/assets/hello.*
 
 # Unrelated local project (separate git repo)
 my-video/
+tracker/

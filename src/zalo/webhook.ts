@@ -2,11 +2,14 @@ import type { Request, Response } from 'express';
 import { config } from '../config';
 import { zalo } from './client';
 import {
-  getClassByInvite, getClassByLink, getClassesByCoach, getMember, getMemberByChat, upsertMember, bindCoach, upsertCoachName,
+  getClassByInvite, getClassByLink, getClassesByCoach, getClass, getCoursePack, mostRecentQuest,
+  getMember, getMemberByChat, upsertMember, bindCoach, upsertCoachName, setLeaderboardOptIn,
   activeOpenQuests,
 } from '../db/store';
 import { signLink, signQuestLink } from '../domain/links';
 import { chunkQuestMessages } from '../domain/notify';
+import { aggregateClass } from '../skills/analytics';
+import { leaderboardFromAgg, leaderboardText } from '../domain/leaderboard';
 
 // Real payload is FLAT: { event_name, message: {...} }; some docs show a { result: {...} } wrapper.
 type ZaloMessage = {
@@ -146,8 +149,43 @@ export async function handleWebhook(req: Request, res: Response) {
       return;
     }
 
+    // 3.8) "bxh" / "xếp hạng" → the learner's class leaderboard (ranked by mastery; peers anonymized unless opted in).
+    if (/^(bxh|xh|top|xếp hạng|xep hang|bảng xếp hạng|bang xep hang)$/i.test(text)) {
+      const m = await getMemberByChat(chatId);
+      if (!m || m.status !== 'active') {
+        await zalo.sendMessage(chatId, 'Bạn cần vào một lớp trước đã. Gửi {orange}mã mời{/orange} để tham gia nhé!', { parseMode: 'markdown' });
+        return;
+      }
+      const cls = await getClass(m.class_id);
+      const courseId = cls?.active_quest_id || cls?.course_id || (await mostRecentQuest(m.class_id));
+      const course = courseId ? await getCoursePack(courseId) : null;
+      const entries = leaderboardFromAgg(await aggregateClass(m.class_id, course));
+      const optedIn = !!(m.engagement && m.engagement.lb);
+      const hint = optedIn
+        ? 'Gõ {orange}ẩn tên{/orange} để xếp hạng ẩn danh.'
+        : 'Gõ {orange}hiện tên{/orange} để công khai tên của bạn trên bảng.';
+      await zalo.sendMessage(chatId, leaderboardText(cls?.name || 'Lớp', entries, m.id) + `\n\n${hint}`, { parseMode: 'markdown' });
+      return;
+    }
+
+    // 3.9) leaderboard name visibility opt-in / opt-out (peers only — you're always ranked either way).
+    const optIn = /^(hiện tên|hien ten|công khai|cong khai)$/i.test(text);
+    const optOut = /^(ẩn tên|an ten|ẩn danh|an danh|giấu tên|giau ten)$/i.test(text);
+    if (optIn || optOut) {
+      const m = await getMemberByChat(chatId);
+      if (!m) {
+        await zalo.sendMessage(chatId, 'Bạn chưa vào lớp nào. Gửi {orange}mã mời{/orange} để tham gia nhé!', { parseMode: 'markdown' });
+        return;
+      }
+      await setLeaderboardOptIn(m.id, optIn);
+      await zalo.sendMessage(chatId, optIn
+        ? '{green}✅ Đã công khai tên{/green} của bạn trên bảng xếp hạng.'
+        : '{yellow}🙈 Đã ẩn tên{/yellow} — bạn vẫn được xếp hạng, nhưng hiện ẩn danh với người khác.', { parseMode: 'markdown' });
+      return;
+    }
+
     // 4) fallback
-    await zalo.sendMessage(chatId, '{big}👋 Chào bạn!{/big}\n{green}🎓 Học viên:{/green} gửi {orange}mã mời{/orange} để vào lớp, hoặc gõ {orange}học{/orange} để nhận nhiệm vụ.\n👩‍🏫 {green}Người dẫn đường:{/green} gõ {orange}tạo lớp{/orange} hoặc {orange}xem lớp{/orange}.', { parseMode: 'markdown' });
+    await zalo.sendMessage(chatId, '{big}👋 Chào bạn!{/big}\n{green}🎓 Học viên:{/green} gửi {orange}mã mời{/orange} để vào lớp · {orange}học{/orange} nhận nhiệm vụ · {orange}bxh{/orange} xem xếp hạng.\n👩‍🏫 {green}Người dẫn đường:{/green} gõ {orange}tạo lớp{/orange} hoặc {orange}xem lớp{/orange}.', { parseMode: 'markdown' });
   } catch (err) {
     console.error('webhook handler error:', err);
   }

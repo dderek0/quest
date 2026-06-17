@@ -25,6 +25,7 @@ const CSS = `
 .stat b{color:var(--ink);font-weight:700}
 .acts{display:flex;gap:8px;flex-wrap:wrap}
 .acts .btn{flex:1;min-width:90px}
+.nudge{background:rgba(16,185,129,.10);color:#059669;border:1px solid rgba(16,185,129,.3);flex:0 0 auto!important;min-width:auto!important}
 .del{background:#fdecea;color:var(--vng);border:1px solid rgba(241,89,43,.3);flex:0 0 auto!important;min-width:auto!important}
 .empty{color:var(--muted);font-size:14px;text-align:center;padding:24px}
 `;
@@ -40,6 +41,7 @@ export function renderAdmin(d: AdminData): string {
       <div class="acts">
         <a class="btn ghost sm" href="${c.manageUrl}" target="_blank">📂 Quản lý</a>
         <a class="btn dark sm" href="${c.boardUrl}" target="_blank">📋 Bảng</a>
+        <button class="btn sm nudge" data-id="${esc(c.id)}">🔔 Nhắc nhở</button>
         <button class="btn sm del" data-id="${esc(c.id)}" data-name="${esc(c.name)}">Xoá</button>
       </div>
     </div>`;
@@ -63,6 +65,13 @@ export function renderAdmin(d: AdminData): string {
       try{var r=await (await fetch('/api/admin/delete-class',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({t:TOKEN,classId:b.getAttribute('data-id')})})).json();
         if(r.ok)location.reload();else{b.disabled=false;b.textContent='Xoá';alert(r.error||'Lỗi');}}
       catch(e){b.disabled=false;b.textContent='Xoá';}};});
+    document.querySelectorAll('.nudge').forEach(function(b){b.onclick=async function(){
+      var orig=b.textContent;b.disabled=true;b.textContent='Đang gửi…';
+      try{var r=await (await fetch('/api/admin/nudge',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({t:TOKEN,classId:b.getAttribute('data-id')})})).json();
+        if(r.ok)alert('🔔 Đã gửi nhắc nhở: '+r.sent+'/'+r.total+' học viên'+(r.failed?(' · lỗi '+r.failed):''));
+        else alert(r.error||'Lỗi');}
+      catch(e){alert('Lỗi mạng');}
+      finally{b.disabled=false;b.textContent=orig;}};});
   </script>`;
 
   return renderPage({ title: 'Admin — Quest', body, css: CSS, scripts, max: 640 });

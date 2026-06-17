@@ -154,6 +154,10 @@ export const listMembers = async (classId: string) => (await q(`select * from me
 export const getMemberByChat = async (chatId: string) => (await q(`select * from members where chat_id=$1 order by created_at desc limit 1`, [chatId])).rows[0] ?? null;
 export const listWaitlist = async (classId: string) => (await q(`select * from members where class_id=$1 and status='waitlist' order by created_at asc`, [classId])).rows;
 export const approveMember = async (memberId: string) => { await q(`update members set status='active' where id=$1`, [memberId]); };
+// Leaderboard name opt-in — merges the `lb` flag into engagement jsonb without touching xp/level/streak.
+export const setLeaderboardOptIn = async (memberId: string, on: boolean) => {
+  await q(`update members set engagement = coalesce(engagement,'{}'::jsonb) || jsonb_build_object('lb',$2::boolean) where id=$1`, [memberId, on]);
+};
 
 // ─── Events ──────────────────────────────────────────────────────────────────
 export async function recordEvent(e: {

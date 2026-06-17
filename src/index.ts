@@ -7,7 +7,7 @@ import {
   questPage, submitAnswer, completeQuestHandler, boardPage, askHandler, approveHandler, visibilityHandler,
   newClassPage, createClassHandler, managePage, addMaterialHandler, uploadMaterialHandler, createQuestHandler,
   activateQuestHandler, toggleQuestHandler, resendQuestHandler, remindQuestHandler, configQuestHandler,
-  landingPage, adminPage, deleteClassHandler,
+  landingPage, adminPage, deleteClassHandler, adminNudgeHandler, leaderboardOptInHandler,
 } from './api/routes';
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 12 * 1024 * 1024 } });
@@ -38,6 +38,7 @@ app.get('/', (req, res, next) => {
 // Admin overview (owner-only — opened via a signed, short-lived link issued by the bot)
 app.get('/admin', adminPage);
 app.post('/api/admin/delete-class', deleteClassHandler);
+app.post('/api/admin/nudge', adminNudgeHandler);
 
 // Zalo Bot inbound webhook
 app.post('/zalo/webhook', handleWebhook);
@@ -46,6 +47,7 @@ app.post('/zalo/webhook', handleWebhook);
 app.get('/q/:token', questPage);
 app.post('/api/answer', submitAnswer);
 app.post('/api/quest/complete', completeQuestHandler);
+app.post('/api/leaderboard/optin', leaderboardOptInHandler); // learner toggles name visibility on the leaderboard
 
 // Coach's Board + ask-your-class + approve/visibility
 app.get('/board/:token', boardPage);

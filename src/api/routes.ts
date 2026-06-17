@@ -10,8 +10,9 @@ import {
   adminOverview, deleteClassCascade, listMembers,
   getQuestRow, activeOpenQuests, setQuestActive, setQuestConfig,
   mostRecentActiveQuest, mostRecentQuest, getQuestAttempts, questRunStats, recordQuestCompletion, ensureQuestCompleted, hasAnsweredQuest, hasCorrectAnswer,
-  completedMemberIds, completionCountsByClass,
+  completedMemberIds, completionCountsByClass, setLeaderboardOptIn,
 } from '../db/store';
+import { leaderboardFromAgg, lbDisplayName } from '../domain/leaderboard';
 import { gradeObjective, gradeFreetext } from '../skills/assess';
 import { bktUpdate, defaultBkt, type Bkt } from '../domain/mastery';
 import { buildCoursePack } from '../skills/ingest';
@@ -26,6 +27,7 @@ import { renderAdmin, renderAdminGate } from '../pages/admin';
 import { aggregateClass, cohortInsights, askClass } from '../skills/analytics';
 import { selectQuestionsForMember } from '../skills/plan';
 import { congratsLine } from '../skills/schedule';
+import { growthNudgeClass } from '../scripts/nudge';
 import { zalo } from '../zalo/client';
 import { MODELS } from '../llm/models';
 
@@ -91,11 +93,22 @@ export async function questPage(req: Request, res: Response) {
   const personalized = { ...course, questions: selectQuestionsForMember(course, member.mastery || {}, `${member.id}:${attempts}`) };
   // All concepts mastered ⇒ count as completed (idempotent, no attempt inflation) so it shows in X/Y + skips reminders.
   if (personalized.questions.length === 0) await ensureQuestCompleted(member.id, row.id);
+
+  // Leaderboard for this learner: ranked by mastery over this quest's concepts; peers anonymized unless
+  // they opted in, the viewer always sees their own row. Top 8 + the viewer's own row if it falls below.
+  const lb = leaderboardFromAgg(await aggregateClass(member.class_id, course));
+  const toRow = (e: typeof lb[number]) => ({ rank: e.rank, name: lbDisplayName(e, member.id), mastery: Math.round(e.mastery * 100), you: e.id === member.id });
+  const leaderboard = lb.slice(0, 8).map(toRow);
+  const me = lb.find((e) => e.id === member.id);
+  if (me && me.rank > 8) leaderboard.push(toRow(me));
+
   res.type('html').send(renderQuest(personalized, member, req.params.token, {
     title: course.title,
     closesAt: row.closes_at ? fmtDate(row.closes_at) : null,
     redoable: row.redoable !== false,
     attemptsLeft: (row.max_attempts || 0) > 0 ? Math.max(0, row.max_attempts - attempts) : null,
+    leaderboard,
+    optedIn: !!(member.engagement && member.engagement.lb),
   }));
 }
 
@@ -436,6 +449,32 @@ export async function deleteClassHandler(req: Request, res: Response) {
   if (!classId) return res.status(400).json({ ok: false, error: 'thiếu classId' });
   await deleteClassCascade(classId);
   res.json({ ok: true });
+}
+
+// POST /api/admin/nudge — demo trigger: fire the personalized daily re-engagement reminder for a class
+// NOW instead of waiting on cron (owner-only). Mirrors what scripts/nudge.ts does on its schedule.
+export async function adminNudgeHandler(req: Request, res: Response) {
+  const { t, classId } = (req.body || {}) as { t?: string; classId?: string };
+  if (!isAdminToken(t || '')) return res.status(401).json({ ok: false, error: 'Không có quyền' });
+  if (!classId) return res.status(400).json({ ok: false, error: 'thiếu classId' });
+  try {
+    const r = await growthNudgeClass(classId);
+    res.json({ ok: true, ...r });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e instanceof Error ? e.message : 'Lỗi' });
+  }
+}
+
+// POST /api/leaderboard/optin — learner toggles whether their name is shown to peers on the leaderboard.
+// Token is the learner's own quest link (m = memberId), so only they can flip their own flag.
+export async function leaderboardOptInHandler(req: Request, res: Response) {
+  const { token, on } = (req.body || {}) as { token?: string; on?: boolean };
+  const p = verifyLink(token || '');
+  if (!p) return res.status(401).json({ ok: false });
+  const member = await getMember(p.m);
+  if (!member) return res.status(404).json({ ok: false });
+  await setLeaderboardOptIn(member.id, !!on);
+  res.json({ ok: true, optedIn: !!on });
 }
 
 // POST /api/quest/activate — assign a quest: turn it on, feature it, and notify every active member.

@@ -33,6 +33,8 @@ const schema = z.object({
 
   // Relational data — optional until Day 1
   DATABASE_URL: z.string().optional(),
+  DB_SSL: z.enum(['require', 'off']).default('off'), // GreenNode vDB has SSL OFF; Railway needed 'require'
+  DB_POOL_MAX: z.coerce.number().default(20),        // pool size per process (bumped for public testing)
 });
 
 const parsed = schema.safeParse(process.env);

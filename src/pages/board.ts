@@ -1,4 +1,5 @@
 import type { ClassAgg } from '../skills/analytics';
+import { leaderboardFromAgg } from '../domain/leaderboard';
 import { renderPage, topbar } from './ui';
 
 const esc = (s: string) => (s || '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]!));
@@ -39,6 +40,14 @@ const CSS = `
 .ans.insight{border-left-color:var(--blue)}
 .qarow{display:flex;gap:7px;flex-wrap:wrap;padding:0 14px 13px}
 .qa{font-size:11.5px;color:var(--muted);background:#f1f5fa;border:1px solid var(--line);border-radius:99px;padding:6px 11px;cursor:pointer}
+.lrow{display:flex;align-items:center;gap:10px;padding:8px 16px;font-size:13px}
+.lrow+.lrow{border-top:1px solid var(--line)}
+.lmd{width:26px;text-align:center;font-size:15px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.lnm{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lpriv{font-size:10px;font-weight:600;color:var(--dim);background:#eef2f7;border-radius:99px;padding:1px 6px;margin-left:5px;vertical-align:middle}
+.lbar{width:84px;height:9px;border-radius:99px;background:#eef2f7;overflow:hidden;flex:none}.lbar i{display:block;height:100%}
+.lpc{width:40px;text-align:right;font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted)}
+.lfl{font-size:11.5px;color:var(--vng);font-variant-numeric:tabular-nums;white-space:nowrap}
 `;
 
 function ring(p: number): string {
@@ -74,6 +83,13 @@ export function renderBoard(className: string, agg: ClassAgg, insight: string, t
     `<div class="row"><span class="nm">${esc(m.name)}</span><div class="bar"><i style="width:${pct(m.avgMastery)}%"></i></div><span class="qc num">${m.answered}c</span>${chip(m.status)}</div>`,
   ).join('') : '<div class="empty">Chưa có học viên nào tham gia.</div>';
 
+  // Leaderboard — coach has full visibility, so real names are shown; the "ẩn" tag flags members who
+  // haven't opted into being named to their peers (in the bot / on their own quest page).
+  const medal = (r: number) => (r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : String(r));
+  const lbRows = leaderboardFromAgg(agg).map((e) =>
+    `<div class="lrow"><span class="lmd">${medal(e.rank)}</span><span class="lnm">${esc(e.name)}${e.optedIn ? '' : '<span class="lpriv">ẩn</span>'}</span><div class="lbar"><i style="width:${pct(e.mastery)}%;background:${barColor(e.mastery)}"></i></div><span class="lpc num">${pct(e.mastery)}%</span>${e.streak ? `<span class="lfl">🔥${e.streak}</span>` : ''}</div>`,
+  ).join('') || '<div class="empty">Chưa có học viên nào để xếp hạng.</div>';
+
   const waitlistCard = waitlist.length ? `
   <details class="card" open>
     <summary class="chead whead">⏳ Chờ duyệt (${waitlist.length})<small>Học viên đang đợi bạn cho vào lớp</small></summary>
@@ -93,6 +109,11 @@ export function renderBoard(className: string, agg: ClassAgg, insight: string, t
   </div>
 
   ${waitlistCard}
+
+  <details class="card" open>
+    <summary class="chead">🏆 Bảng xếp hạng<small>Theo độ thành thạo · 🔥 chuỗi ngày</small></summary>
+    ${lbRows}
+  </details>
 
   <details class="card" open>
     <summary class="chead">📊 Số liệu lớp học<small>Tổng quan tiến độ &amp; điểm yếu chung</small></summary>
